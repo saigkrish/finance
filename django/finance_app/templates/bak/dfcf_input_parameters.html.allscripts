@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Free Cash Flow Input Parameters</title>
+	<meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; width=device-width;">
+	<link rel="stylesheet" type="text/css" href="/data_table_style.css">
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/1.4.5/numeral.min.js"></script>
+	<script>
+var data = {csco:{rev_growth:0.02, earnings_growth:0.08, years_in_stage:5, terminal_growth_rate:0.02, market_returns:0.1, rf_rate:0.01, beta:0.96, ke:0.09, kd:0.045, wacc:0.0848, terminal_wacc:0.0855},
+	    msft:{rev_growth:0.03, earnings_growth:0.09, years_in_stage:5, terminal_growth_rate:0.02, market_returns:0.1, rf_rate:0.01, beta:0.66, ke:0.08, kd:0.025, wacc:0.0548, terminal_wacc:0.0655},
+	    jnpr:{rev_growth:0.04, earnings_growth:0.08, years_in_stage:5, terminal_growth_rate:0.02, market_returns:0.1, rf_rate:0.01, beta:1.20, ke:0.1, kd:0.055, wacc:0.0948, terminal_wacc:0.1}
+	   };
+	var bgd;
+	var formatted_str;
+
+	function getCookie(name) {
+	    var cookieValue = null;
+	    if (document.cookie && document.cookie != '') {
+		var cookies = document.cookie.split(';');
+		for (var i = 0; i < cookies.length; i++) {
+		    var cookie = jQuery.trim(cookies[i]);
+		    // Does this cookie string begin with the name we want?
+		    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+			cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+			break;
+		    }
+		}
+	    }
+	    return cookieValue;
+	}
+
+	function Initialize ()  {
+	    var el_id = document.getElementById("myP");
+	    el_id.innerHTML=JSON.stringify(data);
+	}
+
+	/*
+         * Capture the background info and change the background info for the clicked text box
+         * Make the box populated with unformatted value that can be edited
+	 */
+	function pre_input (e, val_id) {
+	//  Match the pattern numeral(0.08) for instance
+	    var el_id = document.getElementById(e.currentTarget.id);
+	    bgd = el_id.style.backgroundColor;
+	    el_id.style.backgroundColor = "#4E5066";
+	    el_id.innerHTML = document.getElementById(val_id).value;   
+	}
+	    
+
+        /*
+         * If nonsense is entered, numeral.js will return 0.00% or $0.00
+         * In that case, keep the old v_id.value. If not, replace v_id.value with the edited value
+         */
+	function validate (e, val_id, format) {
+	    var el_id = document.getElementById(e.currentTarget.id);
+	    var v_id = document.getElementById(val_id);
+            var valid = true;
+
+	     el_id.style.backgroundColor = bgd;
+
+            // Check if what is inputed is not a garbage
+	    switch(format) {
+	    case 'percent':
+		 if(numeral(el_id.innerHTML).format('0.00%') == "0.00%") {
+                     valid = false;
+                 }
+		 break;
+	    case 'currency':
+		 if(numeral(el_id.innerHTML).format('$0,0.00') == "$0.00") {
+                     valid = false; 
+                 }
+		 break;
+	    case 'year':
+		 if(numeral(el_id.innerHTML).format('0.0') == "0.0") {
+                     valid = false; 
+                 }
+		 break;
+	    case 'beta':
+		 if((numeral(el_id.innerHTML).format('0.00') == "0.00") ||  (el_id.innerHTML < 0.5 || el_id.innerHTML > 2.0)) {
+                     valid = false; 
+                 }
+		 break;
+	    default: 
+                 if (el_id.innerHTML == 0) {
+                     valid = false;
+                 }
+	    }         
+
+	    // Change the value of the hidden element to non-formatted modified value if input is valid
+             if (valid == true) {
+	         v_id.value = el_id.innerHTML;
+             }
+
+	    // Change the innerHTML of the div to formatted value
+	    switch(format) {
+	    case 'percent':
+		 el_id.innerHTML = numeral(v_id.value).format('0.00%');
+		 break;
+	    case 'currency':
+		 el_id.innerHTML = numeral(v_id.value).format('$0,0.00');
+		 break;
+	    case 'year':
+		 el_id.innerHTML = numeral(v_id.value).format('0.0');
+		 break;
+	    case 'beta':
+		 el_id.innerHTML = numeral(v_id.value).format('0.00');
+		 break;
+	    default: 
+		 el_id.innerHTML = v_id.value;
+	    }         
+
+	    // Return the non-formatted value so JS object can be updated
+	    return v_id.value;
+	}
+
+        function processResponse(status, resp_data) {
+	    document.getElementById("myP").innerHTML = resp_data;
+        }
+
+	function processForm (e) {
+	    /*Stop the usual form submission event*/
+	    e.preventDefault();
+	    // document.getElementById("myP").innerHTML = JSON.stringify(data);
+            /* get the elements required for the post method*/
+            var $form = $( this );
+            var csrftoken = getCookie('csrftoken');
+            alert(csrftoken);
+            var url = $form.attr( 'action' );
+            var jdata = JSON.stringify(data);
+            alert(jdata);
+
+            /* post method */
+            $.post( url,
+                  {csrfmiddlewaretoken: csrftoken,
+                   dfcf_ip_params:jdata},
+                  function(resp_data,status ) {
+                      processResponse(status, resp_data);
+                  });      
+	    return false;
+	}
+
+	function theFocus(obj) {
+	    var tooltip = document.getElementById("tooltip");
+	    tooltip.innerHTML = obj.title;
+	    tooltip.style.display = "block";
+	    tooltip.style.top = obj.offsetTop - tooltip.offsetHeight + "px";
+	    tooltip.style.left = obj.offsetLeft + "px";
+	}
+
+	function theBlur(obj) {
+	    var tooltip = document.getElementById("tooltip");
+	    tooltip.style.display = "none";
+	    tooltip.style.top = "-9999px";
+	    tooltip.style.left = "-9999px";
+	}
+	</script>
+</head>
+<body onload="Initialize()">
+
+<table >
+<thead>
+<tr>
+<th class="text-center">Ticker</th>
+<th class="tooltip" onfocus="theFocus(this);" onblur="theBlur(this);" title="For 3% Enter 0.03">Revenue<br/>Growth Rate</th>
+<th class="tooltip" onfocus="theFocus(this);" onblur="theBlur(this);" title="For 8% Enter 0.08">Earnings<br/>Growth Rate</th>
+<th class="tooltip" onfocus="theFocus(this);" onblur="theBlur(this);" title="For 5 yrs Enter 5">#years in stage</th>
+<th class="tooltip" onfocus="theFocus(this);" onblur="theBlur(this);" title="For 2% Enter 0.02">Terminal <br/>Growth Rate</th>
+<th class="tooltip" onfocus="theFocus(this);" onblur="theBlur(this);" title="For 10% Enter 0.1">Market returns</th>
+<th class="tooltip" onfocus="theFocus(this);" onblur="theBlur(this);" title="For 2% Enter 0.02">Risk Free Rate</th>
+<th class="tooltip" onfocus="theFocus(this);" onblur="theBlur(this);" title="Between 0.5 and 2">&#946;</th>
+<th class="tooltip" onfocus="theFocus(this);" onblur="theBlur(this);" title="For 8.45% Enter 0.0845">Cost of Equity</th>
+<th class="tooltip" onfocus="theFocus(this);" onblur="theBlur(this);" title="For 4.5% Enter 0.045">Cost of Debt</th>
+<th class="tooltip" onfocus="theFocus(this);" onblur="theBlur(this);" title="For 8.25% Enter 0.0825">WACC</th>
+<th class="tooltip" onfocus="theFocus(this);" onblur="theBlur(this);" title="For 7% Enter 0.07">Terminal WACC</th>
+<div id="tooltip"></div>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<form name="csco">
+<td>csco</td>
+<td><div id="csco-Revenue-Growth-Rate" contenteditable onfocus="pre_input(event, 'val-csco-Revenue-Growth-Rate')" onblur="data['csco']['rev_growth']=validate(event, 'val-csco-Revenue-Growth-Rate', 'percent')"><script>document.write(numeral(0.02).format('0.00%'))</script></div><input type="hidden" value=0.02 id="val-csco-Revenue-Growth-Rate" ></td>
+<td><div id="csco-Earnings-Growth-Rate" contenteditable onfocus="pre_input(event, 'val-csco-Earnings-Growth_Rate')" onblur="data['csco']['earnings_growth']=validate(event, 'val-csco-Earnings-Growth_Rate', 'percent')"><script>document.write(numeral(0.08).format('0.00%'))</script></div> <input type="hidden" id="val-csco-Earnings-Growth_Rate" value=0.08></td>
+<td><div id="csco-years-in-stage" contenteditable onfocus="pre_input(event, 'val-csco-years-in-stage')" onblur="data['csco']['years_in_stage']=validate(event, 'val-csco-years-in-stage', 'year')"><script>document.write(numeral(5).format('0.0'))</script></div> <input type="hidden" id="val-csco-years-in-stage" value=5></td>
+<td><div id="csco-terminal-growth-rate" contenteditable onfocus="pre_input(event, 'val-csco-terminal-growth-rate')" onblur="data['csco']['terminal_growth_rate']=validate(event, 'val-csco-terminal-growth-rate', 'percent')"><script>document.write(numeral(0.02).format('0.00%'))</script></div> <input type="hidden" id="val-csco-terminal-growth-rate" value=0.02></td>
+<td><div id="csco-market-returns" contenteditable onfocus="pre_input(event, 'val-csco-market-returns')" onblur="data['csco']['market_returns']=validate(event, 'val-csco-market-returns', 'percent')"><script>document.write(numeral(0.1).format('0.00%'))</script></div> <input type="hidden" id="val-csco-market-returns" value=0.1></td>
+<td><div id="csco-rf-rate" contenteditable onfocus="pre_input(event, 'val-csco-rf-rate')" onblur="data['csco']['rf_rate']=validate(event, 'val-csco-rf-rate', 'percent')"><script>document.write(numeral(0.01).format('0.00%'))</script></div> <input type="hidden" id="val-csco-rf-rate" value=0.01></td>
+<td><div id="csco-beta" contenteditable onfocus="pre_input(event, 'val-csco-beta')" onblur="data['csco']['beta']=validate(event, 'val-csco-beta', 'beta')">0.96</div> <input type="hidden" id="val-csco-beta" value=0.96></td>
+<td><div id="csco-ke" contenteditable onfocus="pre_input(event, 'val-csco-ke')" onblur="data['csco']['ke']=validate(event, 'val-csco-ke', 'percent')"><script>document.write(numeral(0.09).format('0.00%'))</script></div> <input type="hidden" id="val-csco-ke" value=0.09></td>
+<td><div id="csco-kd" contenteditable onfocus="pre_input(event, 'val-csco-kd')" onblur="data['csco']['kd']=validate(event, 'val-csco-kd', 'percent')"><script>document.write(numeral(0.045).format('0.00%'))</script></div> <input type="hidden" id="val-csco-kd" value=0.045></td>
+<td><div id="csco-wacc" contenteditable onfocus="pre_input(event, 'val-csco-wacc')" onblur="data['csco']['wacc']=validate(event, 'val-csco-wacc', 'percent')"><script>document.write(numeral(0.0848).format('0.00%'))</script></div> <input type="hidden" id="val-csco-wacc" value=0.0848></td>
+<td><div id="csco-terminal-wacc" contenteditable onfocus="pre_input(event, 'val-csco-terminal-wacc')" onblur="data['csco']['terminal_wacc']=validate(event, 'val-csco-terminal-wacc', 'percent')"><script>document.write(numeral(0.0855).format('0.00%'))</script></div> <input type="hidden" id="val-csco-terminal-wacc" value=0.0855></td>
+</form>
+</tr>
+
+<tr>
+<form name="msft">
+<td>msft</td>
+<td><div id="msft-Revenue-Growth-Rate" contenteditable onfocus="pre_input(event, 'val-msft-Revenue-Growth-Rate')" onblur=" data['msft']['rev_growth']=validate(event,'val-msft-Revenue-Growth-Rate', 'percent')"><script>document.write(numeral(0.03).format('0.00%'))</script></div><input type="hidden" value=0.03 id="val-msft-Revenue-Growth-Rate"></td>
+<td><div id="msft-Earnings-Growth-Rate" contenteditable onfocus="pre_input(event, 'val-msft-Earnings-Growth-Rate')" onblur="data['msft']['earnings_growth']=validate(event,'val-msft-Earnings-Growth-Rate', 'percent')"><script>document.write(numeral(0.09).format('0.00%'))</script></div> <input type="hidden" value=0.09 id="val-msft-Earnings-Growth-Rate"></td>
+<td><div id="msft-years-in-stage" contenteditable onfocus="pre_input(event, 'val-msft-years-in-stage')" onblur="data['msft']['years_in_stage']=validate(event, 'val-msft-years-in-stage', 'year')"><script>document.write(numeral(5).format('0.0'))</script></div> <input type="hidden" id="val-msft-years-in-stage" value=5></td>
+<td><div id="msft-terminal-growth-rate" contenteditable onfocus="pre_input(event, 'val-msft-terminal-growth-rate')" onblur="data['msft']['terminal_growth_rate']=validate(event, 'val-msft-terminal-growth-rate', 'percent')"><script>document.write(numeral(0.02).format('0.00%'))</script></div> <input type="hidden" id="val-msft-terminal-growth-rate" value=0.02></td>
+<td><div id="msft-market-returns" contenteditable onfocus="pre_input(event, 'val-msft-market-returns')" onblur="data['msft']['market_returns']=validate(event, 'val-msft-market-returns', 'percent')"><script>document.write(numeral(0.1).format('0.00%'))</script></div> <input type="hidden" id="val-msft-market-returns" value=0.1></td>
+<td><div id="msft-rf-rate" contenteditable onfocus="pre_input(event, 'val-msft-rf-rate')" onblur="data['msft']['rf_rate']=validate(event, 'val-msft-rf-rate', 'percent')"><script>document.write(numeral(0.01).format('0.00%'))</script></div> <input type="hidden" id="val-msft-rf-rate" value=0.01></td>
+<td><div id="msft-beta" contenteditable onfocus="pre_input(event, 'val-msft-beta')" onblur="data['msft']['beta']=validate(event, 'val-msft-beta', 'beta')">0.66</div> <input type="hidden" id="val-msft-beta" value=0.66></td>
+<td><div id="msft-ke" contenteditable onfocus="pre_input(event, 'val-msft-ke')" onblur="data['msft']['ke']=validate(event, 'val-msft-ke', 'percent')"><script>document.write(numeral(0.08).format('0.00%'))</script></div> <input type="hidden" id="val-msft-ke" value=0.08></td>
+<td><div id="msft-kd" contenteditable onfocus="pre_input(event, 'val-msft-kd')" onblur="data['msft']['kd']=validate(event, 'val-msft-kd', 'percent')"><script>document.write(numeral(0.025).format('0.00%'))</script></div> <input type="hidden" id="val-msft-kd" value=0.025></td>
+<td><div id="msft-wacc" contenteditable onfocus="pre_input(event, 'val-msft-wacc')" onblur="data['msft']['wacc']=validate(event, 'val-msft-wacc', 'percent')"><script>document.write(numeral(0.0548).format('0.00%'))</script></div> <input type="hidden" id="val-msft-wacc" value=0.0548></td>
+<td><div id="msft-terminal-wacc" contenteditable onfocus="pre_input(event, 'val-msft-terminal-wacc')" onblur="data['msft']['terminal_wacc']=validate(event, 'val-msft-terminal-wacc', 'percent')"><script>document.write(numeral(0.0655).format('0.00%'))</script></div> <input type="hidden" id="val-msft-terminal-wacc" value=0.0655></td>
+</form>
+</tr>
+
+<tr>
+<form name="jnpr">
+<td>jnpr</td>
+<td><div id="jnpr-Revenue-Growth-Rate" contenteditable onfocus="pre_input(event, 'val-jnpr-Revenue-Growth-Rate')" onblur=" data['jnpr']['rev_growth']=validate(event, 'val-jnpr-Revenue-Growth-Rate', 'percent')"><script>document.write(numeral(0.04).format('0.00%'))</script></div><input type="hidden" value=0.04 id="val-jnpr-Revenue-Growth-Rate"></td>
+<td><div id="jnpr-Earnings-Growth-Rate" contenteditable onfocus="pre_input(event, 'val-jnpr-Earnings-Growth-Rate')" onblur=" data['jnpr']['earnings_growth']=validate(event,'val-jnpr-Earnings-Growth-Rate', 'percent')"><script>document.write(numeral(0.08).format('0.00%'))</script></div> <input type="hidden" value=0.08 id="val-jnpr-Earnings-Growth-Rate"></td>
+<td><div id="jnpr-years-in-stage" contenteditable onfocus="pre_input(event, 'val-jnpr-years-in-stage')" onblur="data['jnpr']['years_in_stage']=validate(event, 'val-jnpr-years-in-stage', 'year')"><script>document.write(numeral(5).format('0.0'))</script></div> <input type="hidden" id="val-jnpr-years-in-stage" value=5></td>
+<td><div id="jnpr-terminal-growth-rate" contenteditable onfocus="pre_input(event, 'val-jnpr-terminal-growth-rate')" onblur="data['jnpr']['terminal_growth_rate']=validate(event, 'val-jnpr-terminal-growth-rate', 'percent')"><script>document.write(numeral(0.02).format('0.00%'))</script></div> <input type="hidden" id="val-jnpr-terminal-growth-rate" value=0.02></td>
+<td><div id="jnpr-market-returns" contenteditable onfocus="pre_input(event, 'val-jnpr-market-returns')" onblur="data['jnpr']['market_returns']=validate(event, 'val-jnpr-market-returns', 'percent')"><script>document.write(numeral(0.1).format('0.00%'))</script></div> <input type="hidden" id="val-jnpr-market-returns" value=0.1></td>
+<td><div id="jnpr-rf-rate" contenteditable onfocus="pre_input(event, 'val-jnpr-rf-rate')" onblur="data['jnpr']['rf_rate']=validate(event, 'val-jnpr-rf-rate', 'percent')"><script>document.write(numeral(0.01).format('0.00%'))</script></div> <input type="hidden" id="val-jnpr-rf-rate" value=0.01></td>
+<td><div id="jnpr-beta" contenteditable onfocus="pre_input(event, 'val-jnpr-beta')" onblur="data['jnpr']['beta']=validate(event, 'val-jnpr-beta', 'beta')">1.20</div> <input type="hidden" id="val-jnpr-beta" value=1.20></td>
+<td><div id="jnpr-ke" contenteditable onfocus="pre_input(event, 'val-jnpr-ke')" onblur="data['jnpr']['ke']=validate(event, 'val-jnpr-ke', 'percent')"><script>document.write(numeral(0.1).format('0.00%'))</script></div> <input type="hidden" id="val-jnpr-ke" value=0.1></td>
+<td><div id="jnpr-kd" contenteditable onfocus="pre_input(event, 'val-jnpr-kd')" onblur="data['jnpr']['kd']=validate(event, 'val-jnpr-kd', 'percent')"><script>document.write(numeral(0.055).format('0.00%'))</script></div> <input type="hidden" id="val-jnpr-kd" value=0.055></td>
+<td><div id="jnpr-wacc" contenteditable onfocus="pre_input(event, 'val-jnpr-wacc')" onblur="data['jnpr']['wacc']=validate(event, 'val-jnpr-wacc', 'percent')"><script>document.write(numeral(0.0948).format('0.00%'))</script></div> <input type="hidden" id="val-jnpr-wacc" value=0.0948></td>
+<td><div id="jnpr-terminal-wacc" contenteditable onfocus="pre_input(event, 'val-jnpr-terminal-wacc')" onblur="data['jnpr']['terminal_wacc']=validate(event, 'val-jnpr-terminal-wacc', 'percent')"><script>document.write(numeral(0.1).format('0.00%'))</script></div> <input type="hidden" id="val-jnpr-terminal-wacc" value=0.1></td>
+</form>
+</tr>
+
+</tbody>
+</table>
+
+<form id="form1" name="form1" method="post" action="/fin/dfcf_input_modify">
+{% csrf_token %}
+<div>
+<input type="submit" id="submitButton"  name="submitButton" value="Submit">
+</div>
+</form>
+
+<script>
+var form = document.getElementById('form1');
+if (form.attachEvent) {
+   form.attachEvent("submit", processForm);
+} else {
+   form.addEventListener("submit", processForm);
+}
+</script>
+
+
+<p id="myP"></p>
+</body>
+</html>
+

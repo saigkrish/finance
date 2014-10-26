@@ -1,0 +1,141 @@
+<!--
+Dates Worked on and suffered through;
+August 18th 2014: ContentEditable
+August 19th 2014: Creating a form and submitting it through POST; Reading on the other side from a django web framework
+{% if user_profile == 'premiumuser' %}
+{% elif user_profile == 'nameduser' %}
+{% else %}
+{% endif %}
+ -->
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Table Style</title>
+	<meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; width=device-width;">
+	<link rel="stylesheet" type="text/css" href="/data_table_style.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/1.4.5/numeral.min.js"></script>
+</head>
+
+<body>
+
+<div class="table-title">
+<h3></h3>
+</div>
+<table class="table-fill">
+<thead>
+<tr>
+<th class="text-center"><img src="http://www.brandsoftheworld.com/sites/default/files/styles/logo-original-577x577/public/0019/2765/brand.gif" height="42" width="42" /></th>
+<th class="text-left">Revenue<br/>Growth Rate</th>
+<th class="text-left">Earnings<br/>Growth Rate</th>
+<th class="text-left">#years in stage</th>
+<th class="text-left">Terminal <br/>Growth Rate</th>
+<th class="text-left">Market returns</th>
+<th class="text-left">Risk Free Rate</th>
+<th class="text-center">&#946;</th>
+<th class="text-left">Cost of Equity</th>
+<th class="text-left">Cost of Debt</th>
+<th class="text-left">WACC</th>
+<th class="text-left">Terminal WACC</th>
+</tr>
+</thead>
+<tbody class="table-hover">
+<tr>
+<td class="text-left-XLwidth"></td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.02).format('0.00%'))</script></div></td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.08).format('0.00%'))</script></div></td>
+<td class="text-center"><div contenteditable> 5 </div></td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.02).format('0.00%'))</script></div></td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.1).format('0.00%'))</script></div></td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.01).format('0.00%'))</script></div></td>
+<td class="text-center"><div contenteditable> 0.96 </div></td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.09).format('0.00%'))</script></div></td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.045).format('0.00%'))</script></div></td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.084).format('0.00%'))</script></div></td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.10).format('0.00%'))</script></div></td>
+</tr>
+</tbody>
+</table>
+
+<p> &nbsp; </p>
+<p> &nbsp; </p>
+
+<div class="table-title">
+<h3> &nbsp;</h3>
+</div>
+
+<table class="table-fill">
+<thead>
+<tr>
+<th class="text-center"><img src="http://www.brandsoftheworld.com/sites/default/files/styles/logo-original-577x577/public/0019/2765/brand.gif" height="42" width="42" /></th>
+<th class="text-left">2004</th>
+<th class="text-left">2005</th>
+<th class="text-left">2006</th>
+<th class="text-left">2007</th>
+<th class="text-left">2008</th>
+<th class="text-left">2009</th>
+<th class="text-left">2010</th>
+<th class="text-left">2011</th>
+<th class="text-left">2012</th>
+<th class="text-left">2013</th>
+<th class="text-left">2014</th>
+<th class="text-left">2015</th>
+<th class="text-left">2016</th>
+<th class="text-left">2017</th>
+<th class="text-left">2018</th>
+<th class="text-left">2019</th>
+<th class="text-left">Terminal</th>
+</tr>
+</thead>
+<tbody class="table-hover">
+<tr>
+<td class="text-left-XLwidth"><b><i>Revenue</b></i></td>
+<td class="text-left"><div contenteditable><script type="text/javascript">document.write(numeral(22045).format('$0,0.00'))</script></div></td>
+<td class="text-left"><div contenteditable><script type="text/javascript">document.write(numeral(24801).format('$0,0.00'))</script></div></td>
+<td class="text-left"><div contenteditable><script type="text/javascript">document.write(numeral(28484).format('$0,0.00'))</script></div></td>
+<td class="text-left"><div contenteditable><script type="text/javascript">document.write(numeral(34922).format('$0,0.00'))</script></div></td>
+<td class="text-left"><div contenteditable><script type="text/javascript">document.write(numeral(39540).format('$0,0.00'))</script></div></td>
+<td class="text-left"><div contenteditable><script type="text/javascript">document.write(numeral(36117).format('$0,0.00'))</script></div></td>
+<td class="text-left"><div contenteditable><script type="text/javascript">document.write(numeral(40040).format('$0,0.00'))</script></div></td>
+<td class="text-left"><div contenteditable><script type="text/javascript">document.write(numeral(43218).format('$0,0.00'))</script></div></td>
+<td class="text-left"><div contenteditable><script type="text/javascript">document.write(numeral(46061).format('$0,0.00'))</script></div></td>
+<td class="text-left"><div contenteditable><script type="text/javascript">document.write(numeral(48607).format('$0,0.00'))</script></div></td>
+<td class="text-left"><div contenteditable><script type="text/javascript">document.write(numeral(47000).format('$0,0.00'))</script></div></td>
+<td class="text-left"><div contenteditable><script type="text/javascript">document.write(numeral(49000).format('$0,0.00'))</script></div></td>
+<td class="text-left"><div contenteditable><script type="text/javascript">document.write(numeral(52712).format('$0,0.00'))</script></div></td>
+<td class="text-left"><div contenteditable><script type="text/javascript">document.write(numeral(56705).format('$0,0.00'))</script></div></td>
+<td class="text-left"><div contenteditable><script type="text/javascript">document.write(numeral(61000).format('$0,0.00'))</script></div></td>
+<td class="text-left"><div contenteditable><script type="text/javascript">document.write(numeral(63275.30).format('$0,0.00'))</script></div></td>
+</tr>
+<tr>
+<td class="text-left-XLwidth"><b><i>Income-tax Rate</b></i></td>
+<td class="text-left"><div contenteditable><script type="text/javascript">document.write(numeral(0.28).format('0.00%'))</script></div></td>
+<td class="text-left"><div contenteditable><script type="text/javascript">document.write(numeral(0.2860).format('0.00%'))</script></div></td>
+<td class="text-left"><div contenteditable><script type="text/javascript">document.write(numeral(0.2690).format('0.00%'))</script></div></td>
+<td class="text-left"><div contenteditable><script type="text/javascript">document.write(numeral(0.2250).format('0.00%'))</script></div></td>
+<td class="text-left"><div contenteditable><script type="text/javascript">document.write(numeral(0.2150).format('0.00%'))</script></div></td>
+<td class="text-left"><div contenteditable><script type="text/javascript">document.write(numeral(0.2030).format('0.00%'))</script></div></td>
+<td class="text-left"><div contenteditable><script type="text/javascript">document.write(numeral(0.1750).format('0.00%'))</script></div></td>
+<td class="text-left"><div contenteditable><script type="text/javascript">document.write(numeral(0.2130).format('0.00%'))</script></div></td>
+<td class="text-left"><div contenteditable><script type="text/javascript">document.write(numeral(0.2190).format('0.00%'))</script></div></td>
+<td class="text-left"><div contenteditable><script type="text/javascript">document.write(numeral(0.2080).format('0.00%'))</script></div></td>
+<td class="text-left"><div contenteditable><script type="text/javascript">document.write(numeral(0.2).format('0.00%'))</script></div></td>
+<td class="text-left"><div contenteditable><script type="text/javascript">document.write(numeral(0.2).format('0.00%'))</script></div></td>
+<td class="text-left"><div contenteditable><script type="text/javascript">document.write(numeral(0.2).format('0.00%'))</script></div></td>
+<td class="text-left"><div contenteditable><script type="text/javascript">document.write(numeral(0.2).format('0.00%'))</script></div></td>
+<td class="text-left"><div contenteditable><script type="text/javascript">document.write(numeral(0.2).format('0.00%'))</script></div></td>
+<td class="text-left"><div contenteditable><script type="text/javascript">document.write(numeral(0.2).format('0.00%'))</script></div></td>
+</tr>
+</tbody>
+</table>
+
+<div class="table-title">
+<h3> &nbsp;&nbsp;</h3>
+</div>
+  
+<form action = "/fin/test/" method = "post"> 
+{% csrf_token %}
+    <label for="your_name">Your name: </label><br />
+    <input id="your_name" type="text" name="your_name" value="Test variable" />
+    <input type="submit" value="OK" />
+</form>
+</body>

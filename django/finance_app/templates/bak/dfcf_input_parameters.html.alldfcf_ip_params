@@ -1,0 +1,105 @@
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Table Style</title>
+	<meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; width=device-width;">
+	<link rel="stylesheet" type="text/css" href="/data_table_style.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/1.4.5/numeral.min.js"></script>
+	<script type="text/javascript">
+	    function getContent(){
+		document.forms["form1"]["fname"].value = document.getElementById("my-content").innerHTML;
+		alert(document.forms["form1"]["fname"].value);
+	    }
+	</script>
+</head>
+
+<body>
+  
+
+<div id="container" style="width:600px">
+<table>
+<form id="form1" action="/fin/dfcf_input_modify" onsubmit="return getContent()" method="post">
+{% csrf_token %}
+    <td> <div> <textarea id="fname" name="fname" style="display:none"></textarea>
+    <input type="submit" /> </div> </td>
+</form>
+</table>
+
+<table class="table-fill">
+<thead>
+<tr>
+<th class="text-center">Ticker</th>
+<th class="text-left">Revenue<br/>Growth Rate</th>
+<th class="text-left">Earnings<br/>Growth Rate</th>
+<th class="text-left">#years in stage</th>
+<th class="text-left">Terminal <br/>Growth Rate</th>
+<th class="text-left">Market returns</th>
+<th class="text-left">Risk Free Rate</th>
+<th class="text-center">&#946;</th>
+<th class="text-left">Cost of Equity</th>
+<th class="text-left">Cost of Debt</th>
+<th class="text-left">WACC</th>
+<th class="text-left">Terminal WACC</th>
+</tr>
+</thead>
+
+<tr>
+<td class="text-left-XLwidth">csco</td>
+<td class="text-center"><div id="my-content" contenteditable><script type="text/javascript">document.write(numeral(0.02).format('0.00%'))</script></div></td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.08).format('0.00%'))</script></div></td>
+<td class="text-center"><div contenteditable> 5 </div></td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.02).format('0.00%'))</script></div></td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.1).format('0.00%'))</script></div></td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.01).format('0.00%'))</script></div></td>
+<td class="text-center"><div contenteditable> 0.96 </div></td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.09).format('0.00%'))</script></div></td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.045).format('0.00%'))</script></div></td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.0848).format('0.00%'))</script></div></td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.0855).format('0.00%'))</script></div></td>
+</tr>
+
+<tr>
+<td class="text-left-XLwidth">msft</td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.02).format('0.00%'))</script></div></td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.08).format('0.00%'))</script></div></td>
+<td class="text-center"><div contenteditable> 5 </div></td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.02).format('0.00%'))</script></div></td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.1).format('0.00%'))</script></div></td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.01).format('0.00%'))</script></div></td>
+<td class="text-center"><div contenteditable> 0.96 </div></td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.09).format('0.00%'))</script></div></td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.045).format('0.00%'))</script></div></td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.0548).format('0.00%'))</script></div></td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.0655).format('0.00%'))</script></div></td>
+</tr>
+
+<tr>
+<td class="text-left-XLwidth">jnpr</td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.02).format('0.00%'))</script></div></td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.08).format('0.00%'))</script></div></td>
+<td class="text-center"><div contenteditable> 5 </div></td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.02).format('0.00%'))</script></div></td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.1).format('0.00%'))</script></div></td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.01).format('0.00%'))</script></div></td>
+<td class="text-center"><div contenteditable> 0.96 </div></td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.09).format('0.00%'))</script></div></td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.045).format('0.00%'))</script></div></td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.0948).format('0.00%'))</script></div></td>
+<td class="text-center"><div contenteditable><script type="text/javascript">document.write(numeral(0.1).format('0.00%'))</script></div></td>
+</tr>
+
+</tbody>
+</table>
+<table>
+<form id="form2" action="/fin/dfcf_input_modify" onsubmit="return getContent()" method="post">
+{% csrf_token %}
+    <td> <div> <textarea id="my-textarea" style="display:none"></textarea>
+    <input type="submit" /> </div> </td>
+</form>
+</table>
+
+</td>
+
+</body>
+</html>
+
